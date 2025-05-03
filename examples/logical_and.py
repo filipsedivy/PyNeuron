@@ -26,6 +26,8 @@ print("Predictions after training:")
 prediction = Perceptron(input_size=2, learning_rate=0.1)
 prediction.neuron.load_weights("weight.json")
 
+print(f"Neural network has {prediction.count_parameters()} parameters.")
+
 for inputs in training_inputs:
     output = prediction.predict(inputs)
     print(f"Input: {inputs} => Output: {output}")
