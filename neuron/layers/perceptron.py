@@ -27,3 +27,8 @@ class Perceptron:
                 callback(epoch, total_error)
                 if hasattr(callback, "stopped") and callback.stopped:
                     return
+
+    def count_parameters(self) -> int:
+        weights_count = len(self.neuron.weights)
+        total_params = weights_count + 1  # one for bias
+        return total_params
