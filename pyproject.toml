@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PyNeuron"
+description = "🧠 Simple Python library to understand AI fundamentals through core ML implementations"
+license = "MIT"
+license-files = ["LICENSE"]
+version = "1.0.0"
+dependencies = [
+    "numpy>2.2.0"
+]
+authors = [
+    {name = "Filip Sedivy", email = "me@filipsedivy.com"}
+]
