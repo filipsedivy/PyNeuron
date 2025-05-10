@@ -1,7 +1,7 @@
 import numpy as np
 import json
 
-from typing import Union, Callable, Optional
+from typing import Callable, Optional
 
 
 class Neuron:
