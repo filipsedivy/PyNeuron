@@ -1,33 +1,65 @@
 from neuron.layers.perceptron import Perceptron
 from neuron.utils.callbacks import EarlyStopping
 
+import numpy as np
+
 # logical AND function
 # inputs: [x1, x2]
 # outputs: x1 AND x2
 
-training_inputs = [
+training_inputs = np.array([
     [0, 0],
     [0, 1],
     [1, 0],
     [1, 1]
-]
+], dtype=np.float32)
 
-outputs = [0, 0, 0, 1]
+labels = np.array([0, 0, 0, 1], dtype=np.float32)  # Target values (AND)
 
-print("Train perceptron...")
+input_dimension = training_inputs.shape[1]
+learning_rate = 0.1
+epochs = 50
 
-early_stopping = EarlyStopping(patience=5)
+# Initialize Perceptron
+perceptron = Perceptron(input_dimension, learning_rate)
 
-perceptron = Perceptron(input_size=2, learning_rate=0.1)
-perceptron.train(training_inputs, outputs, epochs=10, callbacks=[early_stopping])
-perceptron.neuron.save_weights("weight.json")
+print("Initial weights:", perceptron.neuron.weights, "Bias:", perceptron.neuron.bias)
 
-print("Predictions after training:")
-prediction = Perceptron(input_size=2, learning_rate=0.1)
-prediction.neuron.load_weights("weight.json")
+# Training
+early_stopping = EarlyStopping(patience=20)
+perceptron.train(training_inputs, labels, epochs=epochs, callbacks=[early_stopping])
 
-print(f"Neural network has {prediction.count_parameters()} parameters.")
+print("\nTraining finished.")
+print("Final weights:", perceptron.neuron.weights, "Bias:", perceptron.neuron.bias)
 
-for inputs in training_inputs:
-    output = prediction.predict(inputs)
-    print(f"Input: {inputs} => Output: {output}")
+# Testing on training data (batch prediction)
+print("\nTesting on training data:")
+predictions = perceptron.predict(training_inputs)
+print("Inputs:\n", training_inputs)
+print("Predictions (batch):", predictions)
+print("Expected outputs:", labels)
+
+# Testing on single data points (predict handles single sample now)
+print("\nTesting on single data points:")
+print(f"Input [0, 0]: {perceptron.predict(np.array([0, 0], dtype=np.float32))}")
+print(f"Input [0, 1]: {perceptron.predict(np.array([0, 1], dtype=np.float32))}")
+print(f"Input [1, 0]: {perceptron.predict(np.array([1, 0], dtype=np.float32))}")
+print(f"Input [1, 1]: {perceptron.predict(np.array([1, 1], dtype=np.float32))}")
+
+# Example usage of save/load
+file_path = "perceptron_weights.json"
+print(f"\nSaving weights to {file_path}")
+perceptron.save(file_path)
+
+# Create a new instance and load weights
+new_perceptron = Perceptron(input_dimension)  # Weights will be random upon initialization
+print("New instance, initial weights:", new_perceptron.neuron.weights)
+
+print(f"Loading weights from {file_path}")
+new_perceptron.load(file_path, input_dimension)  # Loads weights from file
+print("New instance, loaded weights:", new_perceptron.neuron.weights)
+
+# Test the loaded model
+print("\nTesting the loaded model:")
+predictions_loaded = new_perceptron.predict(training_inputs)
+print("Predictions (loaded model):", predictions_loaded)
