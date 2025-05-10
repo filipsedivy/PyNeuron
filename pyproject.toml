@@ -9,8 +9,17 @@ license = "MIT"
 license-files = ["LICENSE"]
 version = "1.0.0"
 dependencies = [
-    "numpy>2.2.0",
-    "scipy>1.15.0",
+    "numpy>=2.2.0",
+    "scipy>=1.15.0",
+
+    # PyTorch EcoSystem
+    "torch>=2.7.0",
+    "torchvision>=0.22.0",
+    "torchaudio>=2.7.0",
+    "torchdata>=0.11.0",
+    "torchao>=0.11.0",
+    "torchrl>=0.8.0",
+    "torchmetrics>=1.7.1"
 ]
 authors = [
     {name = "Filip Sedivy", email = "me@filipsedivy.com"}
